@@ -49,20 +49,55 @@ const getSymptomById = async (req, res) => {
         })
     }
 }
+// Rules
 const getAllRules = async (req, res) => {
     try {
-        const data = await symptomModels.getAllRules();
+        const page = parseInt(req.query.page, 10) || 1;
+        const limit = parseInt(req.query.limit, 10) || 6;
+        const offset = (page - 1) * limit;
+
+        const data = await symptomModels.getAllRules(limit, offset);
+        const totalRules = await symptomModels.getCountRules();
+        const totalPages = Math.ceil(totalRules / limit)
         res.json({
             status: "Success",
             message: "GET All Rules Success",
-            data: data
+            limit,
+            data,
+            pagination: {
+                totalRules,
+                totalPages,
+                prevPage: page > 1 ? page - 1 : null,
+                currentPage: page,
+                nextPage: page < totalPages ? page + 1 : null,
+                offset
+            }
+
         })
     } catch (error) {
         res.status(500).json({
-            message: "error"
+            message: error.message
         })
     }
 }
+const postNewRules = async (req, res) => {
+    try {
+        const newRules = req.body
+        await symptomModels.createNewRules(newRules)
+        res.status(201).json({
+            status: "Success",
+            message: "Rules has been successfuly created",
+            data: newRules
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            status: "Error",
+            message: error.message
+        })
+    }
+}
+// Rules
 
 const postNewListSymptom = async (req, res) => {
     try {
@@ -129,13 +164,64 @@ const deleteListSymptom = async (req, res) => {
     }
 }
 
+const getRelationSymptom = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page, 10) || 1;
+        const limit = parseInt(req.query.limit, 10) || 6;
+        const offset = (page - 1) * limit;
+
+        const data = await symptomModels.getRelationSymptom(limit, offset);
+        const totalRelation = await symptomModels.getCountRelation();
+        const totalPages = Math.ceil(totalRelation / limit)
+        res.status(200).json({
+            status: "Success",
+            message: "GET All Relation Symptom Success",
+            limit,
+            data,
+            pagination: {
+                totalRelation,
+                totalPages,
+                prevPage: page > 1 ? page - 1 : null,
+                currentPage: page,
+                nextPage: page < totalPages ? page + 1 : null,
+                offset
+            }
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: "Error",
+            message: error.message
+        })
+    }
+}
+
+const postRelationSymptom = async (req, res) => {
+    try {
+        const newRelation = req.body
+        await symptomModels.createSymptomHypothesis(newRelation)
+        res.status(201).json({
+            status: "Success",
+            message: "Relation Hypothesis has been successfuly created",
+            data: newRelation
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            status: "Error",
+            message: error.message
+        });
+    }
+}
 
 
 module.exports = {
     getAllSymptom,
     getSymptomById,
     getAllRules,
+    postNewRules,
     postNewListSymptom,
     putNewListSymptom,
-    deleteListSymptom
+    deleteListSymptom,
+    getRelationSymptom,
+    postRelationSymptom
 }

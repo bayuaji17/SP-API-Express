@@ -8,4 +8,5 @@ const dbPool  = mysql.createPool({
     database        : process.env.DATABASE
   });
 
+// module.exports = dbPool;
 module.exports = dbPool.promise();

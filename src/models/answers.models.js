@@ -5,9 +5,19 @@ const getAllQuestions = async () => {
     return result
 }
 
+const getAllRules = async () => {
+    const [result] = await dbPool.query('SELECT * FROM aturan_gejala')
+    return result
+}
+const getAllHypothesis = async () => {
+    const [result] = await dbPool.query('SELECT * FROM hipotesis_gejala')
+    return result
+}
 
 
 
 module.exports = {
-    getAllQuestions
+    getAllQuestions,
+    getAllRules,
+    getAllHypothesis
 }

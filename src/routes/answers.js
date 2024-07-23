@@ -5,5 +5,6 @@ const router = express.Router()
 
 
 router.get('/questions', answerController.getAllQuestions)
+router.post('/answer', answerController.postNewAnswer)
 
 module.exports = router
