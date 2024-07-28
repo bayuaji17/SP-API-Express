@@ -32,7 +32,6 @@ const getAllSymptom = async (req, res) => {
         })
     }
 }
-
 const getSymptomById = async (req, res) => {
     try {
         const id_gejala = parseInt(req.params.id_gejala, 10)
@@ -80,6 +79,21 @@ const getAllRules = async (req, res) => {
         })
     }
 }
+const getRulesById = async (req, res) => {
+    try {
+        const kode_aturan = req.params.kode_aturan
+        const data = await symptomModels.getRulesById(kode_aturan);
+        res.json({
+            status: "Success",
+            message: "GET Detail Rules Success",
+            data: data
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: "error"
+        })
+    }
+}
 const postNewRules = async (req, res) => {
     try {
         const newRules = req.body
@@ -90,6 +104,65 @@ const postNewRules = async (req, res) => {
             data: newRules
         })
 
+    } catch (error) {
+        res.status(500).json({
+            status: "Error",
+            message: error.message
+        })
+    }
+}
+const putNewRules = async (req, res) => {
+    try {
+        const id = parseInt(req.params.id, 10)
+        const updatedRules = req.body
+        const result = await symptomModels.updateSelectedRules(id, updatedRules)
+        console.log(result.affectedRows);
+        if (result.affectedRows === 0) {
+            return res.status(400).json({
+                status: "Not Found",
+                message: "Rules not found"
+            })
+        }
+
+        res.status(201).json({
+            status: "Success",
+            message: "Rules has been successfuly updated",
+            data: updatedRules
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            status: "Error",
+            message: error.message
+        })
+    }
+
+}
+const deleteSingleRulesById = async (req, res) => {
+    try {
+        const id = parseInt(req.params.id, 10)
+        await symptomModels.deleteSingleRulesById(id)
+        res.status(200).json({
+            status: "Success",
+            message: "Symptom has been successfuly deleted",
+            data: id
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: "Error",
+            message: error.message
+        })
+    }
+}
+const deleteRules = async (req, res) => {
+    try {
+        const kode_aturan = req.params.kode_aturan
+        await symptomModels.deleteRules(kode_aturan)
+        res.status(200).json({
+            status: "Success",
+            message: "Symptom has been successfuly deleted",
+            data: kode_aturan
+        })
     } catch (error) {
         res.status(500).json({
             status: "Error",
@@ -163,7 +236,7 @@ const deleteListSymptom = async (req, res) => {
 
     }
 }
-
+// Relation
 const getRelationSymptom = async (req, res) => {
     try {
         const page = parseInt(req.query.page, 10) || 1;
@@ -194,6 +267,22 @@ const getRelationSymptom = async (req, res) => {
         })
     }
 }
+const getRelationById = async (req, res) => {
+    try {
+        const id_gejala = parseInt(req.params.id_gejala, 10)
+
+        const data = await symptomModels.getRelationById(id_gejala);
+        res.json({
+            status: "Success",
+            message: "GET Detail Relation Success",
+            data: data
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: "error"
+        })
+    }
+}
 
 const postRelationSymptom = async (req, res) => {
     try {
@@ -212,6 +301,52 @@ const postRelationSymptom = async (req, res) => {
         });
     }
 }
+const putNewRelation = async (req, res) => {
+    try {
+        const id_gejala = parseInt(req.params.id_gejala, 10)
+        const updatedRelation = req.body
+        const result = await symptomModels.editRelation(id_gejala, updatedRelation)
+        console.log(result.affectedRows);
+        if (result.affectedRows === 0) {
+            return res.status(400).json({
+                status: "Not Found",
+                message: "Relation not found"
+            })
+        }
+
+        res.status(201).json({
+            status: "Success",
+            message: "Relation has been successfuly updated",
+            data: updatedRelation
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            status: "Error",
+            message: error.message
+        })
+    }
+
+}
+const deleteRelations = async (req, res) => {
+    try {
+        const id_gejala = parseInt(req.params.id_gejala, 10)
+        await symptomModels.deleteRelation(id_gejala)
+        res.status(200).json({
+            status: "Success",
+            message: "Relation has been successfuly deleted",
+            data: id_gejala
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            status: "Error",
+            message: error.message
+        })
+
+    }
+}
+
 
 
 module.exports = {
@@ -223,5 +358,12 @@ module.exports = {
     putNewListSymptom,
     deleteListSymptom,
     getRelationSymptom,
-    postRelationSymptom
+    postRelationSymptom,
+    deleteRules,
+    getRulesById,
+    putNewRules,
+    deleteSingleRulesById,
+    putNewRelation,
+    deleteRelations,
+    getRelationById
 }
