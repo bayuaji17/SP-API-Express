@@ -116,7 +116,7 @@ const putNewRules = async (req, res) => {
         const id = parseInt(req.params.id, 10)
         const updatedRules = req.body
         const result = await symptomModels.updateSelectedRules(id, updatedRules)
-        console.log(result.affectedRows);
+
         if (result.affectedRows === 0) {
             return res.status(400).json({
                 status: "Not Found",
@@ -195,7 +195,7 @@ const putNewListSymptom = async (req, res) => {
         const id_gejala = parseInt(req.params.id_gejala, 10)
         const updatedDisease = req.body
         const result = await symptomModels.editListSymptom(id_gejala, updatedDisease)
-        console.log(result.affectedRows);
+
         if (result.affectedRows === 0) {
             return res.status(400).json({
                 status: "Not Found",
@@ -306,7 +306,7 @@ const putNewRelation = async (req, res) => {
         const id_gejala = parseInt(req.params.id_gejala, 10)
         const updatedRelation = req.body
         const result = await symptomModels.editRelation(id_gejala, updatedRelation)
-        console.log(result.affectedRows);
+
         if (result.affectedRows === 0) {
             return res.status(400).json({
                 status: "Not Found",

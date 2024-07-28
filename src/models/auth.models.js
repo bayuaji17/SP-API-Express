@@ -18,8 +18,6 @@ const updateToken = async (id,token) => {
 
 
 
-
-
 module.exports = {
     createAdmin,
     loginAdmin,
