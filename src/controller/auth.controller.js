@@ -2,18 +2,20 @@ const authModels = require("../models/auth.models")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 const postNewAdmin = async (req, res) => {
-    const { username, password } = req.body
+    const { username, password,nama_admin } = req.body
+    console.log(req.body);
     try {
         const hashedPassword = await bcrypt.hash(password, 10)
-        const token = jwt.sign({ username, role: 'admin' }, process.env.SECRET_KEY)
-        await authModels.createAdmin(username, hashedPassword, token);
+        const token = jwt.sign({ username,nama_admin, role: 'admin' }, process.env.SECRET_KEY)
+        await authModels.createAdmin(username, hashedPassword, token,nama_admin);
         res.status(201).json({
             status: "Success",
             message: "Admin has been successfuly created",
-            data: username, token
+            data: username,nama_admin, token
 
         })
     } catch (error) {
+        console.log(error);
         res.status(500).json({
             status: "Error",
             message: error.message

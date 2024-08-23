@@ -26,4 +26,7 @@ app.use('/api', authRoutes);
 app.use('/api', answersRoutes);
 
 
-app.listen(port)
+
+app.listen(port, () => {
+    console.log(`app listening on port ${port}`)
+  })

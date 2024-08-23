@@ -1,7 +1,7 @@
 const dbPool = require('../config/database')
 
-const createAdmin = async (username, password,token) => {
-    const [result] = await dbPool.query('INSERT INTO admin(username,password,token) values (?,?,?)', [username, password,token])
+const createAdmin = async (username, password,token,nama_admin) => {
+    const [result] = await dbPool.query('INSERT INTO admin(username,password,token,nama_admin) values (?,?,?,?)', [username, password,token, nama_admin])
     return result
 }
 
